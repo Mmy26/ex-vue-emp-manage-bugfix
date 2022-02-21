@@ -51,6 +51,19 @@
           </div>
         </div>
         <div class="row">
+          <div class="input-field col s12">
+            <input
+              id="passwordConfirm"
+              type="password"
+              class="validate"
+              minlength="8"
+              v-model="passwordConfirm"
+              required
+            />
+            <label for="passwordConfirm">確認用パスワード</label>
+          </div>
+        </div>
+        <div class="row">
           <div class="input-field col s6">
             <button
               class="btn btn-large btn-register waves-effect waves-light"
@@ -85,6 +98,8 @@ export default class RegisterAdmin extends Vue {
   private mailAddress = "";
   // パスワード
   private password = "";
+  // 確認用パスワード
+  private passwordConfirm = "";
   // エラーメッセージ
   private errorMessage = "";
 
@@ -104,12 +119,15 @@ export default class RegisterAdmin extends Vue {
     });
     console.dir("response:" + JSON.stringify(response));
 
-    if (response.data.status === "success") {
-      this.$router.push("/employeeList");
+    if (this.password === this.passwordConfirm) {
+      if (response.data.status === "success") {
+        this.$router.push("/LoginAdmin");
+      } else {
+        this.errorMessage = "登録が失敗しました";
+      }
     } else {
-      this.errorMessage = "登録が失敗しました";
+      this.errorMessage = "パスワードが一致しません";
     }
-
   }
 }
 </script>
