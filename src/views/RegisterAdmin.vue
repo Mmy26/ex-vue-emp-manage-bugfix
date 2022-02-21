@@ -119,14 +119,14 @@ export default class RegisterAdmin extends Vue {
     });
     console.dir("response:" + JSON.stringify(response));
 
-    if (this.password === this.passwordConfirm) {
-      if (response.data.status === "success") {
-        this.$router.push("/LoginAdmin");
-      } else {
-        this.errorMessage = "登録が失敗しました";
-      }
-    } else {
+    if (this.password != this.passwordConfirm) {
       this.errorMessage = "パスワードが一致しません";
+      return;
+    }
+    if (response.data.status === "success") {
+      this.$router.push("/LoginAdmin");
+    } else {
+      this.errorMessage = "登録が失敗しました";
     }
   }
 }
