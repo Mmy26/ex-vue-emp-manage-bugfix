@@ -38,6 +38,10 @@ export class Employee {
     return format(this._hireDate, "yyyy年MM月dd日");
   }
 
+  get getSalary() {
+    return this._salary.toLocaleString();
+  }
+
   public get id(): number {
     return this._id;
   }
