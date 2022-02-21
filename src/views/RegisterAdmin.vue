@@ -4,6 +4,7 @@
       <form class="col s12" id="reg-form">
         <div>{{ errorMessage }}</div>
         <div class="row">
+          <div>{{ errorMessage }}</div>
           <div class="input-field col s6">
             <input
               id="last_name"
