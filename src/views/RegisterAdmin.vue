@@ -109,6 +109,7 @@ export default class RegisterAdmin extends Vue {
     } else {
       this.errorMessage = "登録が失敗しました";
     }
+
   }
 }
 </script>
