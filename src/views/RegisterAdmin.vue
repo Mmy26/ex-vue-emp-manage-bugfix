@@ -4,7 +4,6 @@
       <form class="col s12" id="reg-form">
         <div>{{ errorMessage }}</div>
         <div class="row">
-          <div>{{ errorMessage }}</div>
           <div class="input-field col s6">
             <input
               id="last_name"
@@ -106,14 +105,15 @@ export default class RegisterAdmin extends Vue {
     console.dir("response:" + JSON.stringify(response));
 
     if (
-      this.lastName != "" ||
-      this.firstName != "" ||
-      this.mailAddress != "" ||
+      this.lastName != "" &&
+      this.firstName != "" &&
+      this.mailAddress != "" &&
       this.password != ""
     ) {
       this.$router.push("/loginAdmin");
+    } else {
+      this.errorMessage = "登録できませんでした";
     }
-    this.errorMessage = "登録できませんでした";
   }
 }
 </script>
