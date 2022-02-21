@@ -37,7 +37,10 @@ export class Employee {
   get getHireDate() {
     return format(this._hireDate, "yyyy年MM月dd日");
   }
-
+  /**
+   * 給料の数値を3桁カンマ区切りにして返す.
+   * @returns 給料
+   */
   get getSalary() {
     return this._salary.toLocaleString();
   }
