@@ -70,8 +70,9 @@ export default new Vuex.Store({
           )
         );
       }
+      // 従業員一覧を入社日で並び替え
       state.employees.sort(function(a, b) {
-        if (a.hireDate > b.hireDate) {
+        if (a.hireDate < b.hireDate) {
           return 1;
         } else {
           return -1;
