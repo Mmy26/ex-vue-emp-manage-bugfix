@@ -70,6 +70,13 @@ export default new Vuex.Store({
           )
         );
       }
+      state.employees.sort(function(a, b) {
+        if (a.hireDate > b.hireDate) {
+          return 1;
+        } else {
+          return -1;
+        }
+      });
     },
   }, // end mutations
   getters: {
