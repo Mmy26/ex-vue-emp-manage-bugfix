@@ -37,7 +37,7 @@ export class Employee {
    * 入社日を"yyyy年MM月dd日"の形で返す.
    * @returns 入社日
    */
-  get getHireDate() {
+  get getFormatHireDate(): string {
     return format(this._hireDate, "yyyy年MM月dd日");
   }
 
@@ -45,7 +45,7 @@ export class Employee {
    * 給料の数値を3桁カンマ区切りにして返す.
    * @returns 給料
    */
-  get getSalary() {
+  get getFormatSalary(): string {
     return this._salary.toLocaleString();
   }
 
