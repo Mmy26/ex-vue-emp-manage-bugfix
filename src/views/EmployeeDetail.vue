@@ -4,7 +4,9 @@
     <nav>
       <div class="nav-wrapper">
         <div class="col s12 teal">
-          <a v-bind:href="'/employeeList'" class="breadcrumb">従業員リスト</a>
+          <router-link v-bind:to="'/employeeList'" class="breadcrumb"
+            >従業員リスト</router-link
+          >
           <a class="breadcrumb">従業員詳細</a>
         </div>
       </div>
