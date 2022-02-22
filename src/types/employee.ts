@@ -33,10 +33,14 @@ export class Employee {
     // 扶養人数
     private _dependentsCount: number
   ) {}
-
+  /**
+   * 入社日を"yyyy年MM月dd日"の形で返す.
+   * @returns 入社日
+   */
   get getHireDate() {
     return format(this._hireDate, "yyyy年MM月dd日");
   }
+
   /**
    * 給料の数値を3桁カンマ区切りにして返す.
    * @returns 給料
