@@ -4,7 +4,9 @@
     <nav>
       <div class="nav-wrapper">
         <div class="col s12 teal">
-          <a class="breadcrumb">従業員リスト</a>
+          <router-link v-bind:to="'/employeeList'" class="breadcrumb"
+            >従業員リスト</router-link
+          >
           <a class="breadcrumb">従業員詳細</a>
         </div>
       </div>
@@ -17,7 +19,7 @@
             <tr>
               <th nowrap>従業員名</th>
               <td>
-                <span v-html="currentEmployee.name"></span>
+                <span v-text="currentEmployee.name"></span>
               </td>
             </tr>
             <tr>
@@ -29,45 +31,45 @@
             <tr>
               <th nowrap>性別</th>
               <td>
-                <span v-html="currentEmployee.gender"></span>
+                <span v-text="currentEmployee.gender"></span>
               </td>
             </tr>
             <tr>
               <th nowrap>入社日</th>
-              <td><span v-html="currentEmployee.hireDate"></span></td>
+              <td><span v-text="currentEmployee.getFormatHireDate"></span></td>
             </tr>
             <tr>
               <th nowrap>メールアドレス</th>
               <td>
-                <span v-html="currentEmployee.mailAddress"></span>
+                <span v-text="currentEmployee.mailAddress"></span>
               </td>
             </tr>
             <tr>
               <th nowrap>郵便番号</th>
               <td>
-                <span v-html="currentEmployee.zipCode"></span>
+                <span v-text="currentEmployee.zipCode"></span>
               </td>
             </tr>
             <tr>
               <th nowrap>住所</th>
               <td>
-                <span v-html="currentEmployee.address"></span>
+                <span v-text="currentEmployee.address"></span>
               </td>
             </tr>
             <tr>
               <th nowrap>電話番号</th>
               <td>
-                <span v-html="currentEmployee.telephone"></span>
+                <span v-text="currentEmployee.telephone"></span>
               </td>
             </tr>
             <tr>
               <th nowrap>給料</th>
-              <td><span v-html="currentEmployee.salary"></span>円</td>
+              <td><span v-text="currentEmployee.getFormatSalary"></span>円</td>
             </tr>
             <tr>
               <th nowrap>特性</th>
               <td>
-                <span v-html="currentEmployee.characteristics"></span>
+                <span v-text="currentEmployee.characteristics"></span>
               </td>
             </tr>
             <tr>
@@ -144,16 +146,37 @@ export default class EmployeeDetail extends Vue {
    * Vuexストア内のGetterを呼ぶ。
    * ライフサイクルフックのcreatedイベント利用
    */
-  created(): void {
+  async created(): Promise<void> {
     // 送られてきたリクエストパラメータのidをnumberに変換して取得する
     const employeeId = parseInt(this.$route.params.id);
 
     // VuexストアのGetter、getEmployeeById()メソッドに先ほど取得したIDを渡し、１件の従業員情報を取得し、戻り値をcurrentEmployee属性に代入する
-    this.currentEmployee = this.$store.getters.getEmployeeById(employeeId);
+    // this.currentEmployee = this.$store.getters.getEmployeeById(employeeId);
+
+    const response = await axios.get(
+      "http://153.127.48.168:8080/ex-emp-api/employee/" + employeeId
+    );
+
+    console.dir("response:" + JSON.stringify(response));
+
+    this.currentEmployee = new Employee(
+      response.data.employee.id,
+      response.data.employee.name,
+      response.data.employee.image,
+      response.data.employee.gender,
+      new Date(response.data.employee.hireDate),
+      response.data.employee.mailAddress,
+      response.data.employee.zipCode,
+      response.data.employee.address,
+      response.data.employee.telephone,
+      response.data.employee.salary,
+      response.data.employee.characteristics,
+      response.data.employee.dependentsCount
+    );
 
     // 今取得した従業員情報から画像パスを取り出し、imgディレクトリの名前を前に付与(文字列連結)してcurrentEmployeeImage属性に代入する
     this.currentEmployeeImage = `${config.EMP_WEBAPI_URL}/img/${this.currentEmployee.image}`;
-    
+
     // 今取得した従業員情報から扶養人数を取り出し、currentDependentsCount属性に代入する
     this.currentDependentsCount = this.currentEmployee.dependentsCount;
   }

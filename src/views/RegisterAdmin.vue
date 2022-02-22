@@ -3,6 +3,7 @@
     <div class="row register-page">
       <form class="col s12" id="reg-form">
         <div class="row">
+          <div>{{ lastNameError }}</div>
           <div class="input-field col s6">
             <input
               id="last_name"
@@ -13,6 +14,7 @@
             />
             <label for="last_name">姓</label>
           </div>
+          <div>{{ firstNameError }}</div>
           <div class="input-field col s6">
             <input
               id="first_name"
@@ -24,6 +26,7 @@
             <label for="first_name">名</label>
           </div>
         </div>
+        <div>{{ addressError }}</div>
         <div class="row">
           <div class="input-field col s12">
             <input
@@ -36,6 +39,7 @@
             <label for="email">メールアドレス</label>
           </div>
         </div>
+        <div>{{ passwordError }}</div>
         <div class="row">
           <div class="input-field col s12">
             <input
@@ -47,6 +51,19 @@
               required
             />
             <label for="password">パスワード</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <input
+              id="passwordConfirm"
+              type="password"
+              class="validate"
+              minlength="8"
+              v-model="passwordConfirm"
+              required
+            />
+            <label for="passwordConfirm">確認用パスワード</label>
           </div>
         </div>
         <div class="row">
@@ -84,6 +101,20 @@ export default class RegisterAdmin extends Vue {
   private mailAddress = "";
   // パスワード
   private password = "";
+  // 確認用パスワード
+  private passwordConfirm = "";
+  // エラーメッセージ
+  private errorMessage = "";
+  // 姓のエラーメッセージ
+  private lastNameError = "";
+  // 名のエラーメッセージ
+  private firstNameError = "";
+  // メールアドレスのエラーメッセージ
+  private addressError = "";
+  // パスワードのエラーメッセージ
+  private passwordError = "";
+  // フォームチェッカー
+  private formChecker = true;
 
   /**
    * 管理者情報を登録する.
@@ -101,7 +132,41 @@ export default class RegisterAdmin extends Vue {
     });
     console.dir("response:" + JSON.stringify(response));
 
-    this.$router.push("/employeeList");
+
+    if (this.lastName === "") {
+      this.firstNameError = "名が入力されていません";
+      this.formChecker = false;
+    }
+    if (this.firstName === "") {
+      this.lastNameError = "姓が入力されていません";
+      this.formChecker = false;
+    }
+    if (this.mailAddress === "") {
+      this.addressError = "メールアドレスが入力されていません";
+      this.formChecker = false;
+    }
+    if (this.password === "") {
+      this.passwordError = "パスワードが入力されていません";
+      this.formChecker = false;
+    }
+    if (this.password != this.passwordConfirm) {
+      this.errorMessage = "パスワードが一致しません";
+      this.formChecker = false;
+      
+    }
+    
+    if (this.formChecker === false) {
+      return
+    }
+    
+    if (response.data.status === "success") {
+      this.$router.push("/loginAdmin");
+    } else {
+      this.errorMessage = "登録が失敗しました";
+    }
+    
+
+
   }
 }
 </script>
